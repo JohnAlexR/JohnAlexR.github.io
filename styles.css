@@ -1,3 +1,20 @@
+.main {
+    display: block;
+    background-color: rgb(0, 204, 255);
+}
+
+.second {
+    display: block;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: aqua;
+}
+
+body {
+    display: block;
+    text-align: center;
+  
+}
+
 button {
     color: dodgerblue;
     display: block;
