@@ -35,3 +35,32 @@ style{
             background: grey;
             padding: 5px;
         }
+    .outdoors-about{
+        display: flex;
+        justify-content: center;
+        background-color:bisque 
+    }
+
+        .img-outdoors-about {
+            display: flex;
+            justify-content: left;
+            height: 406.5px;
+            width: auto;
+            background: grey;
+            padding: 5px;
+        }
+
+     .lucy-about{
+         display: flex;
+         justify-content: center;
+         background-color:bisque 
+      }
+    
+         .img-lucy-about {
+             display: flex;
+             justify-content: left;
+             height: 260px;
+             width: auto;
+             background: grey;
+             padding: 5px;
+         }
