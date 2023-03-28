@@ -1,0 +1,37 @@
+style{
+    background-color: bisque;
+}
+
+.header-about{
+    display: flex;
+    justify-content: center;
+}
+
+    .btn-about {
+       
+        margin: 5px;
+        font-size: large;
+    }
+
+.main-about {
+    text-align: center;
+}
+
+    .music-about {
+        display: flex;
+        justify-content: center;
+        background-color:bisque 
+    }
+
+        .text-about {
+            margin-left: 10px;      
+        }
+
+        .img-music-about {
+            display: flex;
+            justify-content: left;
+            height: 250px;
+            width: auto;
+            background: grey;
+            padding: 5px;
+        }
