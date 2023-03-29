@@ -17,10 +17,18 @@ style{
     text-align: center;
 }
 
+.about-section {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border: 2px dotted greenyellow;
+}
+
     .music-about {
         display: flex;
-        justify-content: center;
-        background-color:bisque 
+        justify-content: left;
+        background-color:bisque;
+        border: 2px dotted blue
     }
 
         .text-about {
@@ -34,11 +42,13 @@ style{
             width: auto;
             background: grey;
             padding: 5px;
+            border: 2px dotted red;
         }
     .outdoors-about{
         display: flex;
-        justify-content: center;
-        background-color:bisque 
+        justify-content: left;
+        background-color:bisque; 
+        border: 2px dotted blue;
     }
 
         .img-outdoors-about {
@@ -48,12 +58,14 @@ style{
             width: auto;
             background: grey;
             padding: 5px;
+            border: 2px dotted red;
         }
 
      .lucy-about{
          display: flex;
-         justify-content: center;
-         background-color:bisque 
+         justify-content: left;
+         background-color:bisque;
+         border: 2px dotted blue;
       }
     
          .img-lucy-about {
@@ -63,4 +75,5 @@ style{
              width: auto;
              background: grey;
              padding: 5px;
+             border: 2px dotted red;
          }
