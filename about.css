@@ -5,6 +5,7 @@ style{
 .header-about{
     display: flex;
     justify-content: center;
+    padding: 5px;
 }
 
     .btn-about {
@@ -15,6 +16,8 @@ style{
 
 .main-about {
     text-align: center;
+    border-bottom: 4px solid #222;
+    font-family: fantasy;
 }
 
 .about-section {
@@ -27,6 +30,7 @@ style{
         display: flex;
         justify-content: left;
         background-color:bisque;
+        font-family: Georgia, 'Times New Roman', Times, serif;
     }
 
         .text-about {
@@ -40,6 +44,8 @@ style{
             width: auto;
             background: grey;
             padding: 5px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+
         }
     .outdoors-about{
         display: flex;
@@ -60,6 +66,8 @@ style{
          display: flex;
          justify-content: left;
          background-color:bisque;
+         font-family: Georgia, 'Times New Roman', Times, serif;
+
       }
     
          .img-lucy-about {
