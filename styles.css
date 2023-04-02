@@ -74,15 +74,21 @@ button {
         }
 
         .journal_intro_text {
-            margin-left: 10px;
+            margin-left: 15px;
             font-size: 14px;
-            text-align: center;
+            text-align: left;
+            margin: 5px;
+            padding: 10px;
         }
 
     .journal_text {
             background-color: white;
             border: 3px solid grey;
             border-radius: 10px;
-            margin-left: 5px;
+            margin: 5px;
+            padding: 10px;
     }
 
+    .underline {
+        border-bottom: 2px solid #222;
+    }
