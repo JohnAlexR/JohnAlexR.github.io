@@ -104,6 +104,7 @@
 .menu-character:not(.jumping):not(.landing):not(.falling):not(.walking) {
   top: -125px;
   transform: translateX(-50%);
+  height: 140px;
 }
 
 /* Base character image size for idle state */
@@ -117,6 +118,7 @@
 .menu-character.jumping {
   animation: jump 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   top: -200px;
+  height: 140px;
 }
 
 @keyframes jump {
@@ -143,10 +145,12 @@
 
 .menu-character.walking {
   top: -200px;
+  height: 140px;
 }
 
 .menu-character.landing {
   top: -200px;
+  height: 140px;
 }
 
 .menu-character.falling {
