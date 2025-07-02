@@ -5,13 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: ".",
+    outDir: "dist",
     assetsDir: "assets",
-    rollupOptions: {
-      input: {
-        main: "./index.html",
-      },
-    },
   },
   server: {
     port: 3000,
