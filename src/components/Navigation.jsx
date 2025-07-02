@@ -1,28 +1,15 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
 import "./Navigation.css";
 
 function Navigation() {
-  const location = useLocation();
-
   return (
     <nav className="navigation">
       <div className="nav-container">
-        <Link to="/" className="nav-logo">
-          John Alex Rusyniak
-        </Link>
-        <ul className="nav-menu">
-          <li className="nav-item">
-            <Link
-              to="/"
-              className={`nav-link ${
-                location.pathname === "/" ? "active" : ""
-              }`}
-            >
-              Home
-            </Link>
-          </li>
-        </ul>
+        <div className="nav-brand">
+          <div className="nav-name">JOHN ALEX</div>
+          <div className="nav-domain">RUSYNIAK.DEV</div>
+        </div>
+        <button className="contact-button">CONTACT</button>
       </div>
     </nav>
   );

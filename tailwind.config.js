@@ -6,7 +6,12 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        horizon: ["Horizon", "sans-serif"],
+        "horizon-outlined": ["Horizon Outlined", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

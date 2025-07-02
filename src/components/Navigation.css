@@ -1,76 +1,72 @@
 .navigation {
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  padding: 20px;
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  min-height: 60px;
+  align-items: flex-start;
+  max-width: 100%;
 }
 
-.nav-logo {
-  font-family: "Shanti", sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: #020057;
-  text-decoration: none;
-}
-
-.nav-menu {
+.nav-brand {
   display: flex;
-  list-style: none;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.nav-item {
-  margin: 0;
+.nav-name {
+  font-family: "Horizon", sans-serif;
+  font-size: 42px;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 4px;
 }
 
-.nav-link {
-  color: #020057;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
+.nav-domain {
+  font-family: "Horizon", sans-serif;
   font-size: 16px;
+  color: #ffffff;
+  opacity: 0.5;
+  line-height: 1;
 }
 
-.nav-link:hover {
-  background-color: rgba(65, 163, 255, 0.1);
-  color: #020057;
+.contact-button {
+  font-family: "Horizon", sans-serif;
+  font-size: 23px;
+  color: #000000;
+  background-color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.3s ease;
 }
 
-.nav-link.active {
-  background-color: rgba(65, 163, 255, 0.2);
-  color: #020057;
-  font-weight: 600;
+.contact-button:hover {
+  background-color: #f0f0f0;
 }
 
 @media (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    padding: 10px 20px;
-    gap: 10px;
+  .navigation {
+    padding: 15px;
   }
 
-  .nav-menu {
-    gap: 15px;
+  .nav-name {
+    font-size: 32px;
   }
 
-  .nav-link {
+  .nav-domain {
     font-size: 14px;
+  }
+
+  .contact-button {
+    font-size: 18px;
     padding: 6px 12px;
   }
 }
