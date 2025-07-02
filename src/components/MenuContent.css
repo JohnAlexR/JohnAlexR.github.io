@@ -110,56 +110,115 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .selected-menu-content {
-    gap: 25px;
+    gap: 20px;
     padding: 15px;
     width: 100%;
     max-width: 100%;
   }
 
   .menu-title {
-    font-size: 24px;
+    font-size: 20px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     line-height: 1.1;
   }
 
   .menu-description {
-    font-size: 14px;
+    font-size: 12px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
   }
 
   .details-list {
-    gap: 8px;
+    gap: 6px;
     width: 100%;
   }
 
   .detail-item {
-    font-size: 12px;
-    padding: 6px 10px;
+    font-size: 10px;
+    padding: 4px 8px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: left;
   }
 
   .menu-link {
-    font-size: 14px;
-    padding: 8px 16px;
+    font-size: 12px;
+    padding: 6px 12px;
   }
 
   .content-image {
-    max-width: 120px;
+    max-width: 100px;
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: 12px;
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
 
   .description {
-    font-size: 12px;
+    font-size: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .selected-menu-content {
+    gap: 15px;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .menu-title {
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.1;
+  }
+
+  .menu-description {
+    font-size: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .details-list {
+    gap: 4px;
+    width: 100%;
+  }
+
+  .detail-item {
+    font-size: 8px;
+    padding: 3px 6px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+  }
+
+  .menu-link {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+
+  .content-image {
+    max-width: 80px;
+  }
+
+  .subtitle {
+    font-size: 9px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .description {
+    font-size: 8px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
@@ -167,19 +226,60 @@
 }
 
 /* Extra small mobile devices */
-@media (max-width: 480px) {
+@media (max-width: 360px) {
   .selected-menu-content {
-    gap: 4px !important;
-    padding: 0 2px !important;
+    gap: 10px;
+    padding: 8px;
+    width: 100%;
+    max-width: 100%;
   }
-  .selected-menu-content .menu-title,
-  .selected-menu-content .menu-description,
-  .selected-menu-content .detail-item,
-  .selected-menu-content .menu-link {
-    font-size: 10px !important;
-    word-break: break-word;
+
+  .menu-title {
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.1;
   }
+
+  .menu-description {
+    font-size: 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .details-list {
+    gap: 3px;
+    width: 100%;
+  }
+
+  .detail-item {
+    font-size: 6px;
+    padding: 2px 4px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+  }
+
+  .menu-link {
+    font-size: 7px;
+    padding: 3px 6px;
+  }
+
   .content-image {
-    max-width: 60px !important;
+    max-width: 60px;
+  }
+
+  .subtitle {
+    font-size: 7px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .description {
+    font-size: 6px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
   }
 }

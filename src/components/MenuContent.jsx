@@ -1,5 +1,5 @@
 import React from "react";
-import "./MenuContent.css";
+// import "./MenuContent.css";
 
 const MenuContent = ({
   selectedMenuItem,

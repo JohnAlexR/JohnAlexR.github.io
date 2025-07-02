@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Home.css";
+// import "./Home.css";
 import MenuContent from "./MenuContent";
 import { menuItems, defaultContent, stateContent } from "../config/menuContent";
 import idleImage from "../../Images/Idle.png";
