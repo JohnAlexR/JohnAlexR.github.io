@@ -5,6 +5,9 @@ import jumping1Image from "../../Images/jumping_1.png";
 import jumping2Image from "../../Images/jumping_2.png";
 import jumping3Image from "../../Images/jumping_3.png";
 import landingImage from "../../Images/landing.png";
+import walking1Image from "../../Images/walking_1.png";
+import walking2Image from "../../Images/walking_2.png";
+import walking3Image from "../../Images/walking_3.png";
 
 function Home() {
   const [characterPosition, setCharacterPosition] = useState(35); // Position below waving image
@@ -14,6 +17,8 @@ function Home() {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null); // Start with no selection
   const [hasStarted, setHasStarted] = useState(false); // Track if user has started moving
   const [isFalling, setIsFalling] = useState(false); // Track falling animation state
+  const [isWalking, setIsWalking] = useState(false);
+  const [walkFrame, setWalkFrame] = useState(0); // 0-2 for the 3 walk frames
 
   // Physics state
   const velocity = useRef(0);
@@ -46,6 +51,13 @@ function Home() {
     jumping2Image, // Frame 1: Mid-air
     jumping3Image, // Frame 2: Peak of jump
     landingImage, // Frame 3: Landing
+  ];
+
+  // Walking animation frames
+  const walkFrames = [
+    walking1Image, // Frame 0: Step 1
+    walking2Image, // Frame 1: Step 2
+    walking3Image, // Frame 2: Step 3
   ];
 
   const canMove = () => {
@@ -106,30 +118,65 @@ function Home() {
   const startFallingAnimation = () => {
     console.log("Starting falling animation");
     setIsFalling(true);
+    setIsLanding(false); // Ensure landing is cleared
     setJumpFrame(2); // Start with jumping_2 frame
 
     // After 1500ms, land on menu and set hasStarted to true
     setTimeout(() => {
       console.log("Falling animation complete, setting hasStarted to true");
       setIsFalling(false);
+      setIsLanding(false); // Ensure landing is cleared
       setHasStarted(true);
       hasStartedRef.current = true; // Set ref as well
       setJumpFrame(0); // Return to idle
     }, 1500);
   };
 
+  // Walking animation sequence
+  const startWalkingAnimation = () => {
+    if (!isWalking) {
+      setIsWalking(true);
+      setWalkFrame(0);
+
+      // Cycle through walking frames
+      const walkInterval = setInterval(() => {
+        setWalkFrame((prev) => (prev + 1) % 3);
+      }, 200); // Change frame every 200ms
+
+      // Store interval reference to clear it later
+      return walkInterval;
+    }
+  };
+
   // Physics update loop
   useEffect(() => {
     let animationId;
+    let walkInterval = null;
 
     const updatePhysics = () => {
       // Update horizontal movement
       if (isMovingLeft.current) {
         targetVelocity.current = -MAX_SPEED;
+        // Start walking animation if not already walking
+        if (!isWalking && hasStartedRef.current) {
+          walkInterval = startWalkingAnimation();
+        }
       } else if (isMovingRight.current) {
         targetVelocity.current = MAX_SPEED;
+        // Start walking animation if not already walking
+        if (!isWalking && hasStartedRef.current) {
+          walkInterval = startWalkingAnimation();
+        }
       } else {
         targetVelocity.current = 0;
+        // Stop walking animation
+        if (isWalking) {
+          setIsWalking(false);
+          if (walkInterval) {
+            clearInterval(walkInterval);
+            walkInterval = null;
+          }
+        }
       }
 
       // Apply acceleration towards target velocity
@@ -161,8 +208,11 @@ function Home() {
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
+      if (walkInterval) {
+        clearInterval(walkInterval);
+      }
     };
-  }, []);
+  }, [isWalking, hasStartedRef.current]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -266,6 +316,8 @@ function Home() {
       return jumping2Image; // Show jumping_2 during falling
     } else if (isJumping) {
       return jumpFrames[jumpFrame];
+    } else if (isWalking) {
+      return walkFrames[walkFrame];
     }
     return idleImage;
   };
@@ -335,7 +387,7 @@ function Home() {
           <div
             className={`menu-character ${isJumping ? "jumping" : ""} ${
               isLanding ? "landing" : ""
-            } ${isFalling ? "falling" : ""}`}
+            } ${isFalling ? "falling" : ""} ${isWalking ? "walking" : ""}`}
             style={{ left: `${characterPosition}%` }}
           >
             <img
