@@ -1,5 +1,6 @@
 import React from "react";
 // import "./Navigation.css";
+import githubLogo from "../../Images/github-logo.png";
 
 function Navigation() {
   return (
@@ -15,11 +16,7 @@ function Navigation() {
               rel="noopener noreferrer"
               className="github-link"
             >
-              <img
-                src="/Images/github-logo.png"
-                alt="GitHub"
-                className="github-logo"
-              />
+              <img src={githubLogo} alt="GitHub" className="github-logo" />
             </a>
           </div>
         </div>

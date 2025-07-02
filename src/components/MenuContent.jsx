@@ -1,5 +1,6 @@
 import React from "react";
 // import "./MenuContent.css";
+import wavingImage from "../../Images/waving.png";
 
 const MenuContent = ({
   selectedMenuItem,
@@ -12,7 +13,7 @@ const MenuContent = ({
     return (
       <div className="image-text-container">
         <div className="image-section">
-          <img src="/Images/waving.png" alt="Waving" className="waving-image" />
+          <img src={wavingImage} alt="Waving" className="waving-image" />
         </div>
         <div className="text-section">
           <div className="tagline">{stateContent.initial.tagline}</div>
@@ -86,7 +87,7 @@ const MenuContent = ({
   return (
     <div className="image-text-container">
       <div className="image-section">
-        <img src="/Images/waving.png" alt="Waving" className="waving-image" />
+        <img src={wavingImage} alt="Waving" className="waving-image" />
       </div>
       <div className="text-section">
         <div className="tagline">{defaultContent.tagline}</div>
