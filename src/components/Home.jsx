@@ -21,6 +21,7 @@ function Home() {
   const [isFalling, setIsFalling] = useState(false); // Track falling animation state
   const [isWalking, setIsWalking] = useState(false);
   const [walkFrame, setWalkFrame] = useState(0); // 0-4 for the 5 walk frames
+  const [isCharacterHidden, setIsCharacterHidden] = useState(false);
 
   // Physics state
   const velocity = useRef(0);
@@ -94,6 +95,26 @@ function Home() {
     setSelectedMenuItem(menuItem);
     console.log(`Selected: ${menuItem.name}`);
     // Add your navigation logic here
+  };
+
+  const handleMouseMenuItemSelect = (menuItem) => {
+    setSelectedMenuItem(menuItem);
+    console.log(`Selected via mouse: ${menuItem.name}`);
+
+    // If selecting from initial state, skip falling and set hasStarted
+    if (!hasStarted && !isFalling) {
+      console.log("Skipping falling animation, setting hasStarted to true");
+      setHasStarted(true);
+      hasStartedRef.current = true;
+    }
+
+    // Hide character when selected via mouse
+    setIsCharacterHidden(true);
+    setIsWalking(false);
+    setIsJumping(false);
+    setIsLanding(false);
+    setWalkFrame(0);
+    setJumpFrame(0);
   };
 
   // Jump animation sequence
@@ -284,6 +305,13 @@ function Home() {
       // Don't allow falling if hasStarted is true
       if (hasStartedRef.current && !isFalling) {
         console.log("Processing normal movement");
+
+        // Show character if it was hidden by mouse selection
+        if (isCharacterHidden) {
+          console.log("Showing character after movement key press");
+          setIsCharacterHidden(false);
+        }
+
         switch (event.key.toLowerCase()) {
           case "a":
           case "arrowleft":
@@ -348,11 +376,12 @@ function Home() {
     if (
       hasStarted &&
       currentMenuItem &&
-      currentMenuItem.id !== selectedMenuItem?.id
+      currentMenuItem.id !== selectedMenuItem?.id &&
+      !isCharacterHidden // Don't auto-select if character was hidden by mouse selection
     ) {
       handleMenuItemSelect(currentMenuItem);
     }
-  }, [currentMenuItem, hasStarted]);
+  }, [currentMenuItem, hasStarted, isCharacterHidden]);
 
   // Debug walkFrame changes
   useEffect(() => {
@@ -394,6 +423,8 @@ function Home() {
       return jumping2Image; // Show jumping_2 during falling
     } else if (isJumping) {
       return jumpFrames[jumpFrame];
+    } else if (isLanding) {
+      return landingImage; // Show landing image during landing
     } else if (isWalking) {
       return walkFrames[walkFrame];
     }
@@ -461,7 +492,7 @@ function Home() {
         )}
       </div>
       <div className="bottom-menu">
-        {(hasStarted || isFalling) && (
+        {(hasStarted || isFalling) && !isCharacterHidden && (
           <div
             className={`menu-character ${isJumping ? "jumping" : ""} ${
               isLanding ? "landing" : ""
@@ -482,8 +513,15 @@ function Home() {
           <div
             key={item.id}
             className={`menu-item ${
-              hasStarted && currentMenuItem?.id === item.id ? "highlighted" : ""
+              hasStarted &&
+              currentMenuItem?.id === item.id &&
+              !isCharacterHidden
+                ? "highlighted"
+                : ""
             } ${selectedMenuItem?.id === item.id ? "selected" : ""}`}
+            onClick={() => {
+              handleMouseMenuItemSelect(item);
+            }}
           >
             {item.name}
           </div>

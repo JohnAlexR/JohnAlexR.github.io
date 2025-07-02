@@ -156,6 +156,7 @@
 .menu-character.falling {
   animation: fall 1s ease-in;
   top: -550px; /* Start position above screen */
+  height: 140px;
 }
 
 @keyframes fall {
