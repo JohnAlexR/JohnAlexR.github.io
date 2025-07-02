@@ -165,7 +165,6 @@ function Home() {
             startJumpAnimation();
           }
           break;
-        case " ":
         case "enter":
           const currentItem = getCurrentMenuItem();
           if (currentItem) {
@@ -202,6 +201,13 @@ function Home() {
 
   const currentMenuItem = getCurrentMenuItem();
 
+  // Auto-select menu item when character stands on it
+  useEffect(() => {
+    if (currentMenuItem && currentMenuItem.id !== selectedMenuItem?.id) {
+      handleMenuItemSelect(currentMenuItem);
+    }
+  }, [currentMenuItem]);
+
   // Determine which image to show
   const getCharacterImage = () => {
     if (isJumping) {
@@ -218,19 +224,32 @@ function Home() {
   return (
     <div className="home">
       <div className="main-content">
-        <div className="image-text-container">
-          <div className="image-section">
-            <img
-              src="/Images/waving.png"
-              alt="Waving"
-              className="waving-image"
-            />
+        {!selectedMenuItem ? (
+          // Default content when no menu item is selected
+          <div className="image-text-container">
+            <div className="image-section">
+              <img
+                src="/Images/waving.png"
+                alt="Waving"
+                className="waving-image"
+              />
+            </div>
+            <div className="text-section">
+              <div className="tagline">TAGLINE PLACEHOLDER</div>
+              <div className="controls">
+                WASD &lt;- -&gt; OR CLICK TO SELECT
+              </div>
+            </div>
           </div>
-          <div className="text-section">
-            <div className="tagline">TAGLINE PLACEHOLDER</div>
-            <div className="controls">WASD &lt;- -&gt; OR CLICK TO SELECT</div>
+        ) : (
+          // Content when a menu item is selected
+          <div className="selected-menu-content">
+            <div className="menu-title">{selectedMenuItem.name}</div>
+            <div className="menu-description">
+              Placeholder content for {selectedMenuItem.name.toLowerCase()}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="bottom-menu">
         <div

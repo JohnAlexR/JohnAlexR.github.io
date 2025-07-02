@@ -56,6 +56,34 @@
   line-height: 1;
 }
 
+.selected-menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.menu-title {
+  font-family: "Horizon", sans-serif;
+  font-size: 48px;
+  color: #ffffff;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.menu-description {
+  font-family: "Horizon", sans-serif;
+  font-size: 24px;
+  color: #ffffff;
+  opacity: 0.8;
+  line-height: 1.4;
+  max-width: 600px;
+}
+
 .bottom-menu {
   display: flex;
   width: 100%;
@@ -138,8 +166,8 @@
 }
 
 .menu-item.selected {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #ffffff20;
+  color: #ffffff;
   box-shadow: 0 -30px 65px -30px rgba(255, 255, 255, 1);
 }
 
