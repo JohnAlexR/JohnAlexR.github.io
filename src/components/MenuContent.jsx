@@ -16,7 +16,9 @@ const MenuContent = ({
         </div>
         <div className="text-section">
           <div className="tagline">{stateContent.initial.tagline}</div>
-          <div className="controls">{stateContent.initial.controls}</div>
+          <div className="controls mobile-hide">
+            {stateContent.initial.controls}
+          </div>
         </div>
       </div>
     );
@@ -27,7 +29,9 @@ const MenuContent = ({
       <div className="image-text-container">
         <div className="text-section">
           <div className="tagline">{stateContent.falling.tagline}</div>
-          <div className="controls">{stateContent.falling.controls}</div>
+          <div className="controls mobile-hide">
+            {stateContent.falling.controls}
+          </div>
         </div>
       </div>
     );
@@ -92,7 +96,7 @@ const MenuContent = ({
         {defaultContent.description && (
           <div className="description">{defaultContent.description}</div>
         )}
-        <div className="controls">{defaultContent.controls}</div>
+        <div className="controls mobile-hide">{defaultContent.controls}</div>
       </div>
     </div>
   );

@@ -110,37 +110,76 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .selected-menu-content {
-    gap: 20px;
+    gap: 25px;
     padding: 15px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .menu-title {
-    font-size: 36px;
+    font-size: 24px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.1;
   }
 
   .menu-description {
-    font-size: 20px;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .details-list {
+    gap: 8px;
+    width: 100%;
   }
 
   .detail-item {
-    font-size: 16px;
-    padding: 6px 12px;
+    font-size: 12px;
+    padding: 6px 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
   }
 
   .menu-link {
-    font-size: 18px;
-    padding: 10px 20px;
+    font-size: 14px;
+    padding: 8px 16px;
   }
 
   .content-image {
-    max-width: 150px;
+    max-width: 120px;
   }
 
   .subtitle {
-    font-size: 16px;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .description {
-    font-size: 14px;
+    font-size: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .selected-menu-content {
+    gap: 4px !important;
+    padding: 0 2px !important;
+  }
+  .selected-menu-content .menu-title,
+  .selected-menu-content .menu-description,
+  .selected-menu-content .detail-item,
+  .selected-menu-content .menu-link {
+    font-size: 10px !important;
+    word-break: break-word;
+  }
+  .content-image {
+    max-width: 60px !important;
   }
 }
