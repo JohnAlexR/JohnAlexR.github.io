@@ -7,11 +7,12 @@ import jumping3Image from "../../Images/jumping_3.png";
 import landingImage from "../../Images/landing.png";
 
 function Home() {
-  const [characterPosition, setCharacterPosition] = useState(50); // 50% is center
+  const [characterPosition, setCharacterPosition] = useState(35); // Position below waving image
   const [isJumping, setIsJumping] = useState(false);
   const [isLanding, setIsLanding] = useState(false);
   const [jumpFrame, setJumpFrame] = useState(0); // 0-3 for the 4 jump frames
-  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+  const [selectedMenuItem, setSelectedMenuItem] = useState(null); // Start with no selection
+  const [hasStarted, setHasStarted] = useState(false); // Track if user has started moving
 
   // Physics state
   const velocity = useRef(0);
@@ -147,6 +148,17 @@ function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
+      // Set hasStarted when any movement key is pressed
+      if (
+        !hasStarted &&
+        (event.key.toLowerCase() === "a" ||
+          event.key.toLowerCase() === "d" ||
+          event.key.toLowerCase() === "arrowleft" ||
+          event.key.toLowerCase() === "arrowright")
+      ) {
+        setHasStarted(true);
+      }
+
       switch (event.key.toLowerCase()) {
         case "a":
         case "arrowleft":
@@ -203,10 +215,14 @@ function Home() {
 
   // Auto-select menu item when character stands on it
   useEffect(() => {
-    if (currentMenuItem && currentMenuItem.id !== selectedMenuItem?.id) {
+    if (
+      hasStarted &&
+      currentMenuItem &&
+      currentMenuItem.id !== selectedMenuItem?.id
+    ) {
       handleMenuItemSelect(currentMenuItem);
     }
-  }, [currentMenuItem]);
+  }, [currentMenuItem, hasStarted]);
 
   // Determine which image to show
   const getCharacterImage = () => {
@@ -252,26 +268,28 @@ function Home() {
         )}
       </div>
       <div className="bottom-menu">
-        <div
-          className={`menu-character ${isJumping ? "jumping" : ""} ${
-            isLanding ? "landing" : ""
-          }`}
-          style={{ left: `${characterPosition}%` }}
-        >
-          <img
-            src={getCharacterImage()}
-            alt="Character"
-            className="character-image"
-            style={{
-              transform: shouldFlipCharacter() ? "scaleX(-1)" : "scaleX(1)",
-            }}
-          />
-        </div>
+        {hasStarted && (
+          <div
+            className={`menu-character ${isJumping ? "jumping" : ""} ${
+              isLanding ? "landing" : ""
+            }`}
+            style={{ left: `${characterPosition}%` }}
+          >
+            <img
+              src={getCharacterImage()}
+              alt="Character"
+              className="character-image"
+              style={{
+                transform: shouldFlipCharacter() ? "scaleX(-1)" : "scaleX(1)",
+              }}
+            />
+          </div>
+        )}
         {menuItems.map((item, index) => (
           <div
             key={item.id}
             className={`menu-item ${
-              currentMenuItem?.id === item.id ? "highlighted" : ""
+              hasStarted && currentMenuItem?.id === item.id ? "highlighted" : ""
             } ${selectedMenuItem?.id === item.id ? "selected" : ""}`}
           >
             {item.name}
