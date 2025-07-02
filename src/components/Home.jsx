@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Home.css";
 import idleImage from "../../Images/Idle.png";
+import jumping1Image from "../../Images/jumping_1.png";
+import jumping2Image from "../../Images/jumping_2.png";
+import jumping3Image from "../../Images/jumping_3.png";
+import landingImage from "../../Images/landing.png";
 
 function Home() {
   const [characterPosition, setCharacterPosition] = useState(50); // 50% is center
   const [isJumping, setIsJumping] = useState(false);
+  const [isLanding, setIsLanding] = useState(false);
+  const [jumpFrame, setJumpFrame] = useState(0); // 0-3 for the 4 jump frames
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
   // Physics state
@@ -12,6 +18,7 @@ function Home() {
   const targetVelocity = useRef(0);
   const isMovingLeft = useRef(false);
   const isMovingRight = useRef(false);
+  const lastDirection = useRef("right"); // Track last movement direction
 
   // Physics constants
   const ACCELERATION = 0.8; // How fast the character accelerates
@@ -28,6 +35,14 @@ function Home() {
     { id: "mobile-apps", name: "Mobile Apps" },
     { id: "marketing", name: "Marketing" },
     { id: "music", name: "Music" },
+  ];
+
+  // Jump animation frames
+  const jumpFrames = [
+    jumping1Image, // Frame 0: Initial jump
+    jumping2Image, // Frame 1: Mid-air
+    jumping3Image, // Frame 2: Peak of jump
+    landingImage, // Frame 3: Landing
   ];
 
   const canMove = () => {
@@ -59,6 +74,29 @@ function Home() {
     setSelectedMenuItem(menuItem);
     console.log(`Selected: ${menuItem.name}`);
     // Add your navigation logic here
+  };
+
+  // Jump animation sequence
+  const startJumpAnimation = () => {
+    setJumpFrame(0);
+
+    // Frame 1: Initial jump (0-200ms)
+    setTimeout(() => setJumpFrame(1), 200);
+
+    // Frame 2: Mid-air (200-400ms)
+    setTimeout(() => setJumpFrame(2), 400);
+
+    // End jump animation (400-600ms)
+    setTimeout(() => {
+      // Show landing frame with more pronounced effect
+      setJumpFrame(3);
+      setIsLanding(true);
+      setTimeout(() => {
+        setIsJumping(false);
+        setIsLanding(false);
+        setJumpFrame(0); // Return to idle
+      }, 1500); // Show landing for 1500ms - much longer landing effect
+    }, 600);
   };
 
   // Physics update loop
@@ -113,19 +151,18 @@ function Home() {
         case "a":
         case "arrowleft":
           isMovingLeft.current = true;
+          lastDirection.current = "left";
           break;
         case "d":
         case "arrowright":
           isMovingRight.current = true;
+          lastDirection.current = "right";
           break;
         case "w":
         case "arrowup":
           if (!isJumping) {
             setIsJumping(true);
-            // Add jump physics here if needed
-            setTimeout(() => {
-              setIsJumping(false);
-            }, 600); // Jump duration
+            startJumpAnimation();
           }
           break;
         case " ":
@@ -165,6 +202,19 @@ function Home() {
 
   const currentMenuItem = getCurrentMenuItem();
 
+  // Determine which image to show
+  const getCharacterImage = () => {
+    if (isJumping) {
+      return jumpFrames[jumpFrame];
+    }
+    return idleImage;
+  };
+
+  // Determine if character should be flipped
+  const shouldFlipCharacter = () => {
+    return lastDirection.current === "left";
+  };
+
   return (
     <div className="home">
       <div className="main-content">
@@ -184,10 +234,19 @@ function Home() {
       </div>
       <div className="bottom-menu">
         <div
-          className={`menu-character ${isJumping ? "jumping" : ""}`}
+          className={`menu-character ${isJumping ? "jumping" : ""} ${
+            isLanding ? "landing" : ""
+          }`}
           style={{ left: `${characterPosition}%` }}
         >
-          <img src={idleImage} alt="Character" className="character-image" />
+          <img
+            src={getCharacterImage()}
+            alt="Character"
+            className="character-image"
+            style={{
+              transform: shouldFlipCharacter() ? "scaleX(-1)" : "scaleX(1)",
+            }}
+          />
         </div>
         {menuItems.map((item, index) => (
           <div
