@@ -136,6 +136,27 @@
   top: -300px;
 }
 
+.menu-character.falling {
+  animation: fall 1.5s ease-in;
+  top: -600px; /* Start position above screen */
+}
+
+@keyframes fall {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(340px);
+  }
+}
+
+/* Make falling image larger to match jumping size */
+.menu-character.falling .character-image {
+  height: 300px;
+  width: auto;
+  object-fit: contain;
+}
+
 .menu-item {
   flex: 1;
   background-color: #000000;

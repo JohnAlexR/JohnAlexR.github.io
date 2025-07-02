@@ -13,6 +13,7 @@ function Home() {
   const [jumpFrame, setJumpFrame] = useState(0); // 0-3 for the 4 jump frames
   const [selectedMenuItem, setSelectedMenuItem] = useState(null); // Start with no selection
   const [hasStarted, setHasStarted] = useState(false); // Track if user has started moving
+  const [isFalling, setIsFalling] = useState(false); // Track falling animation state
 
   // Physics state
   const velocity = useRef(0);
@@ -20,6 +21,7 @@ function Home() {
   const isMovingLeft = useRef(false);
   const isMovingRight = useRef(false);
   const lastDirection = useRef("right"); // Track last movement direction
+  const hasStartedRef = useRef(false); // Track started state with ref
 
   // Physics constants
   const ACCELERATION = 0.8; // How fast the character accelerates
@@ -100,6 +102,22 @@ function Home() {
     }, 600);
   };
 
+  // Falling animation from waving to menu
+  const startFallingAnimation = () => {
+    console.log("Starting falling animation");
+    setIsFalling(true);
+    setJumpFrame(2); // Start with jumping_2 frame
+
+    // After 1500ms, land on menu and set hasStarted to true
+    setTimeout(() => {
+      console.log("Falling animation complete, setting hasStarted to true");
+      setIsFalling(false);
+      setHasStarted(true);
+      hasStartedRef.current = true; // Set ref as well
+      setJumpFrame(0); // Return to idle
+    }, 1500);
+  };
+
   // Physics update loop
   useEffect(() => {
     let animationId;
@@ -148,43 +166,61 @@ function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Set hasStarted when any movement key is pressed
+      console.log(
+        "Key pressed:",
+        event.key,
+        "hasStarted:",
+        hasStarted,
+        "hasStartedRef:",
+        hasStartedRef.current,
+        "isFalling:",
+        isFalling
+      );
+
+      // Start falling animation when any movement key is pressed for the first time
       if (
-        !hasStarted &&
+        !hasStartedRef.current &&
+        !isFalling &&
         (event.key.toLowerCase() === "a" ||
           event.key.toLowerCase() === "d" ||
           event.key.toLowerCase() === "arrowleft" ||
           event.key.toLowerCase() === "arrowright")
       ) {
-        setHasStarted(true);
+        console.log("Triggering falling animation");
+        startFallingAnimation();
+        return; // Don't process movement until falling is complete
       }
 
-      switch (event.key.toLowerCase()) {
-        case "a":
-        case "arrowleft":
-          isMovingLeft.current = true;
-          lastDirection.current = "left";
-          break;
-        case "d":
-        case "arrowright":
-          isMovingRight.current = true;
-          lastDirection.current = "right";
-          break;
-        case "w":
-        case "arrowup":
-          if (!isJumping) {
-            setIsJumping(true);
-            startJumpAnimation();
-          }
-          break;
-        case "enter":
-          const currentItem = getCurrentMenuItem();
-          if (currentItem) {
-            handleMenuItemSelect(currentItem);
-          }
-          break;
-        default:
-          break;
+      // Don't allow falling if hasStarted is true
+      if (hasStartedRef.current && !isFalling) {
+        console.log("Processing normal movement");
+        switch (event.key.toLowerCase()) {
+          case "a":
+          case "arrowleft":
+            isMovingLeft.current = true;
+            lastDirection.current = "left";
+            break;
+          case "d":
+          case "arrowright":
+            isMovingRight.current = true;
+            lastDirection.current = "right";
+            break;
+          case "w":
+          case "arrowup":
+            if (!isJumping) {
+              setIsJumping(true);
+              startJumpAnimation();
+            }
+            break;
+          case "enter":
+            const currentItem = getCurrentMenuItem();
+            if (currentItem) {
+              handleMenuItemSelect(currentItem);
+            }
+            break;
+          default:
+            break;
+        }
       }
     };
 
@@ -226,7 +262,9 @@ function Home() {
 
   // Determine which image to show
   const getCharacterImage = () => {
-    if (isJumping) {
+    if (isFalling) {
+      return jumping2Image; // Show jumping_2 during falling
+    } else if (isJumping) {
       return jumpFrames[jumpFrame];
     }
     return idleImage;
@@ -240,7 +278,32 @@ function Home() {
   return (
     <div className="home">
       <div className="main-content">
-        {!selectedMenuItem ? (
+        {!hasStarted && !isFalling ? (
+          // Initial content before game starts
+          <div className="image-text-container">
+            <div className="image-section">
+              <img
+                src="/Images/waving.png"
+                alt="Waving"
+                className="waving-image"
+              />
+            </div>
+            <div className="text-section">
+              <div className="tagline">TAGLINE PLACEHOLDER</div>
+              <div className="controls">
+                WASD &lt;- -&gt; OR CLICK TO SELECT
+              </div>
+            </div>
+          </div>
+        ) : isFalling ? (
+          // Falling animation content
+          <div className="image-text-container">
+            <div className="text-section">
+              <div className="tagline">FALLING TO MENU...</div>
+              <div className="controls">PLEASE WAIT</div>
+            </div>
+          </div>
+        ) : !selectedMenuItem ? (
           // Default content when no menu item is selected
           <div className="image-text-container">
             <div className="image-section">
@@ -268,11 +331,11 @@ function Home() {
         )}
       </div>
       <div className="bottom-menu">
-        {hasStarted && (
+        {(hasStarted || isFalling) && (
           <div
             className={`menu-character ${isJumping ? "jumping" : ""} ${
               isLanding ? "landing" : ""
-            }`}
+            } ${isFalling ? "falling" : ""}`}
             style={{ left: `${characterPosition}%` }}
           >
             <img
