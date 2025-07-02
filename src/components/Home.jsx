@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Home.css";
+import MenuContent from "./MenuContent";
+import { menuItems, defaultContent, stateContent } from "../config/menuContent";
 import idleImage from "../../Images/Idle.png";
 import jumping1Image from "../../Images/jumping_1.png";
 import jumping2Image from "../../Images/jumping_2.png";
@@ -41,13 +43,6 @@ function Home() {
 
   const lastMoveTime = useRef(0);
   const moveCooldown = 100; // 100ms cooldown between moves
-
-  const menuItems = [
-    { id: "websites", name: "Websites" },
-    { id: "mobile-apps", name: "Mobile Apps" },
-    { id: "marketing", name: "Marketing" },
-    { id: "music", name: "Music" },
-  ];
 
   // Jump animation frames
   const jumpFrames = [
@@ -92,14 +87,18 @@ function Home() {
   };
 
   const handleMenuItemSelect = (menuItem) => {
-    setSelectedMenuItem(menuItem);
-    console.log(`Selected: ${menuItem.name}`);
+    // Find the full menu item object from configuration
+    const fullMenuItem = menuItems.find((item) => item.id === menuItem.id);
+    setSelectedMenuItem(fullMenuItem);
+    console.log(`Selected: ${fullMenuItem.name}`);
     // Add your navigation logic here
   };
 
   const handleMouseMenuItemSelect = (menuItem) => {
-    setSelectedMenuItem(menuItem);
-    console.log(`Selected via mouse: ${menuItem.name}`);
+    // Find the full menu item object from configuration
+    const fullMenuItem = menuItems.find((item) => item.id === menuItem.id);
+    setSelectedMenuItem(fullMenuItem);
+    console.log(`Selected via mouse: ${fullMenuItem.name}`);
 
     // If selecting from initial state, skip falling and set hasStarted
     if (!hasStarted && !isFalling) {
@@ -439,57 +438,18 @@ function Home() {
   return (
     <div className="home">
       <div className="main-content">
-        {!hasStarted && !isFalling ? (
-          // Initial content before game starts
-          <div className="image-text-container">
-            <div className="image-section">
-              <img
-                src="/Images/waving.png"
-                alt="Waving"
-                className="waving-image"
-              />
-            </div>
-            <div className="text-section">
-              <div className="tagline">TAGLINE PLACEHOLDER</div>
-              <div className="controls">
-                WASD &lt;- -&gt; OR CLICK TO SELECT
-              </div>
-            </div>
-          </div>
-        ) : isFalling ? (
-          // Falling animation content
-          <div className="image-text-container">
-            <div className="text-section">
-              <div className="tagline">FALLING TO MENU...</div>
-              <div className="controls">PLEASE WAIT</div>
-            </div>
-          </div>
-        ) : !selectedMenuItem ? (
-          // Default content when no menu item is selected
-          <div className="image-text-container">
-            <div className="image-section">
-              <img
-                src="/Images/waving.png"
-                alt="Waving"
-                className="waving-image"
-              />
-            </div>
-            <div className="text-section">
-              <div className="tagline">TAGLINE PLACEHOLDER</div>
-              <div className="controls">
-                WASD &lt;- -&gt; OR CLICK TO SELECT
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Content when a menu item is selected
-          <div className="selected-menu-content">
-            <div className="menu-title">{selectedMenuItem.name}</div>
-            <div className="menu-description">
-              Placeholder content for {selectedMenuItem.name.toLowerCase()}
-            </div>
-          </div>
-        )}
+        <MenuContent
+          selectedMenuItem={selectedMenuItem}
+          defaultContent={defaultContent}
+          stateContent={stateContent}
+          currentState={
+            !hasStarted && !isFalling
+              ? "initial"
+              : isFalling
+              ? "falling"
+              : "default"
+          }
+        />
       </div>
       <div className="bottom-menu">
         {(hasStarted || isFalling) && !isCharacterHidden && (

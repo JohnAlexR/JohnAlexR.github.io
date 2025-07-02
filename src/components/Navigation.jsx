@@ -23,7 +23,9 @@ function Navigation() {
             </a>
           </div>
         </div>
-        <button className="contact-button">CONTACT</button>
+        <a href="mailto:johnalex@rusyniak.dev" className="contact-button">
+          CONTACT
+        </a>
       </div>
     </nav>
   );
