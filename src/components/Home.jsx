@@ -27,6 +27,7 @@ function Home() {
   const isMovingRight = useRef(false);
   const lastDirection = useRef("right"); // Track last movement direction
   const hasStartedRef = useRef(false); // Track started state with ref
+  const walkIntervalRef = useRef(null); // Track walking animation interval
 
   // Physics constants
   const ACCELERATION = 0.8; // How fast the character accelerates
@@ -134,48 +135,63 @@ function Home() {
 
   // Walking animation sequence
   const startWalkingAnimation = () => {
+    console.log("startWalkingAnimation called, isWalking:", isWalking);
     if (!isWalking) {
+      console.log("Starting walking animation");
       setIsWalking(true);
       setWalkFrame(0);
 
       // Cycle through walking frames
       const walkInterval = setInterval(() => {
-        setWalkFrame((prev) => (prev + 1) % 3);
+        console.log("Interval triggered, current walkFrame:", walkFrame);
+        setWalkFrame((prev) => {
+          const newFrame = (prev + 1) % 3;
+          console.log("Walking frame updated from", prev, "to", newFrame);
+          return newFrame;
+        });
       }, 200); // Change frame every 200ms
 
-      // Store interval reference to clear it later
+      console.log("Interval created:", walkInterval);
       return walkInterval;
+    }
+    return null;
+  };
+
+  // Stop walking animation
+  const stopWalkingAnimation = () => {
+    if (isWalking) {
+      console.log("Stopping walking animation");
+      setIsWalking(false);
+      setWalkFrame(0);
     }
   };
 
   // Physics update loop
   useEffect(() => {
     let animationId;
-    let walkInterval = null;
 
     const updatePhysics = () => {
       // Update horizontal movement
       if (isMovingLeft.current) {
         targetVelocity.current = -MAX_SPEED;
         // Start walking animation if not already walking
-        if (!isWalking && hasStartedRef.current) {
-          walkInterval = startWalkingAnimation();
+        if (!isWalking && hasStarted) {
+          console.log("Starting walking (left)");
+          setIsWalking(true);
         }
       } else if (isMovingRight.current) {
         targetVelocity.current = MAX_SPEED;
         // Start walking animation if not already walking
-        if (!isWalking && hasStartedRef.current) {
-          walkInterval = startWalkingAnimation();
+        if (!isWalking && hasStarted) {
+          console.log("Starting walking (right)");
+          setIsWalking(true);
         }
       } else {
         targetVelocity.current = 0;
         // Stop walking animation
         if (isWalking) {
+          console.log("Stopping walking");
           setIsWalking(false);
-          if (walkInterval) {
-            clearInterval(walkInterval);
-            walkInterval = null;
-          }
         }
       }
 
@@ -208,11 +224,8 @@ function Home() {
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
-      if (walkInterval) {
-        clearInterval(walkInterval);
-      }
     };
-  }, [isWalking, hasStartedRef.current]);
+  }, [isWalking, hasStarted]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -229,7 +242,7 @@ function Home() {
 
       // Start falling animation when any movement key is pressed for the first time
       if (
-        !hasStartedRef.current &&
+        !hasStarted &&
         !isFalling &&
         (event.key.toLowerCase() === "a" ||
           event.key.toLowerCase() === "d" ||
@@ -242,7 +255,7 @@ function Home() {
       }
 
       // Don't allow falling if hasStarted is true
-      if (hasStartedRef.current && !isFalling) {
+      if (hasStarted && !isFalling) {
         console.log("Processing normal movement");
         switch (event.key.toLowerCase()) {
           case "a":
@@ -309,6 +322,40 @@ function Home() {
       handleMenuItemSelect(currentMenuItem);
     }
   }, [currentMenuItem, hasStarted]);
+
+  // Debug walkFrame changes
+  useEffect(() => {
+    console.log("walkFrame changed to:", walkFrame);
+  }, [walkFrame]);
+
+  // Separate walking animation effect
+  useEffect(() => {
+    let walkInterval = null;
+
+    if (isWalking && hasStarted) {
+      console.log("Walking effect triggered - starting interval");
+      setWalkFrame(0);
+
+      walkInterval = setInterval(() => {
+        console.log("Walking interval triggered");
+        setWalkFrame((prev) => {
+          const newFrame = (prev + 1) % 3;
+          console.log("Walking frame updated from", prev, "to", newFrame);
+          return newFrame;
+        });
+      }, 200);
+    } else if (!isWalking && walkInterval) {
+      console.log("Walking effect triggered - clearing interval");
+      clearInterval(walkInterval);
+    }
+
+    return () => {
+      if (walkInterval) {
+        console.log("Walking effect cleanup - clearing interval");
+        clearInterval(walkInterval);
+      }
+    };
+  }, [isWalking, hasStarted]);
 
   // Determine which image to show
   const getCharacterImage = () => {
