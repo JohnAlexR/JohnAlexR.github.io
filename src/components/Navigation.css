@@ -35,8 +35,28 @@
   color: #ffffff;
   opacity: 0.5;
   line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.github-link {
+  display: inline-block;
+  transition: opacity 0.3s ease;
+}
+
+.github-link:hover {
+  opacity: 0.8;
+}
+
+.github-logo {
+  width: 24px;
+  height: 24px;
+  filter: invert(1); /* Make the GitHub logo white */
+  vertical-align: middle;
+  border-radius: 50%; /* Make it fully rounded */
+}
 
 .character-image {
   height: 200px;
@@ -77,6 +97,11 @@
   .contact-button {
     font-size: 18px;
     padding: 6px 12px;
+  }
+
+  .github-logo {
+    width: 20px;
+    height: 20px;
   }
 
   .character-image {

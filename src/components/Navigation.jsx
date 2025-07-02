@@ -7,7 +7,21 @@ function Navigation() {
       <div className="nav-container">
         <div className="nav-brand">
           <div className="nav-name">JOHN ALEX</div>
-          <div className="nav-domain">RUSYNIAK.DEV</div>
+          <div className="nav-domain">
+            RUSYNIAK.DEV
+            <a
+              href="https://github.com/JohnAlexR"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="github-link"
+            >
+              <img
+                src="/Images/github-logo.png"
+                alt="GitHub"
+                className="github-logo"
+              />
+            </a>
+          </div>
         </div>
         <button className="contact-button">CONTACT</button>
       </div>
