@@ -8,6 +8,13 @@ yarn-error.log*
 dist/
 build/
 
+# Keep CNAME for GitHub Pages
+!CNAME
+
+# Keep built assets for GitHub Pages
+!assets/
+!index.html
+
 # Environment variables
 .env
 .env.local
