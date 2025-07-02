@@ -97,30 +97,42 @@
   top: -125px;
   transform: translateX(-50%);
   z-index: 1001;
+  height: 140px;
 }
 
 /* Ensure idle character has proper positioning */
 .menu-character:not(.jumping):not(.landing):not(.falling):not(.walking) {
+  top: -125px;
   transform: translateX(-50%);
 }
 
+/* Base character image size for idle state */
+.menu-character:not(.jumping):not(.landing):not(.falling):not(.walking)
+  .character-image {
+  height: 140px;
+  width: auto;
+  object-fit: contain;
+}
+
 .menu-character.jumping {
-  animation: jump 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: jump 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  top: -200px;
 }
 
 @keyframes jump {
   0% {
-    transform: translateX(-50%) translateY(-100px);
+    transform: translateX(-50%) translateY(0);
   }
   50% {
-    transform: translateX(-50%) translateY(-200px);
+    transform: translateX(-50%) translateY(-100px);
   }
   100% {
-    transform: translateX(-50%) translateY(-100px);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
 .character-image {
+  height: 140px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
@@ -149,14 +161,6 @@
   100% {
     transform: translateX(-50%) translateY(340px);
   }
-}
-
-/* Base character image size for idle state */
-.menu-character:not(.jumping):not(.landing):not(.falling):not(.walking)
-  .character-image {
-  height: 140px;
-  width: auto;
-  object-fit: contain;
 }
 
 .menu-item {

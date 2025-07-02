@@ -98,25 +98,48 @@ function Home() {
 
   // Jump animation sequence
   const startJumpAnimation = () => {
+    console.log("Starting jump animation");
     setJumpFrame(0);
 
-    // Frame 1: Initial jump (0-200ms)
-    setTimeout(() => setJumpFrame(1), 200);
+    // Stop walking animation during jump
+    setIsWalking(false);
 
-    // Frame 2: Mid-air (200-400ms)
-    setTimeout(() => setJumpFrame(2), 400);
+    // Frame 1: Initial jump (0-150ms)
+    setTimeout(() => setJumpFrame(1), 150);
 
-    // End jump animation (400-600ms)
+    // Frame 2: Mid-air (150-300ms)
+    setTimeout(() => setJumpFrame(2), 300);
+
+    // End jump animation (300-450ms)
     setTimeout(() => {
       // Show landing frame with more pronounced effect
       setJumpFrame(3);
       setIsLanding(true);
-      setTimeout(() => {
-        setIsJumping(false);
-        setIsLanding(false);
-        setJumpFrame(0); // Return to idle
-      }, 1500); // Show landing for 1500ms - much longer landing effect
-    }, 600);
+
+      // Check for movement during landing and transition faster if moving
+      const checkMovementDuringLanding = () => {
+        if (isMovingLeft.current || isMovingRight.current) {
+          console.log(
+            "Movement detected during landing, transitioning to walking"
+          );
+          setIsJumping(false);
+          setIsLanding(false);
+          setJumpFrame(0); // Return to idle
+          setIsWalking(true);
+        } else {
+          // No movement, complete full landing animation
+          setTimeout(() => {
+            console.log("Jump animation complete");
+            setIsJumping(false);
+            setIsLanding(false);
+            setJumpFrame(0); // Return to idle
+          }, 1000); // Show landing for 1000ms - shorter landing effect
+        }
+      };
+
+      // Check for movement after a short delay (300ms instead of 1000ms)
+      setTimeout(checkMovementDuringLanding, 300);
+    }, 450);
   };
 
   // Falling animation from waving to menu
@@ -274,9 +297,13 @@ function Home() {
             break;
           case "w":
           case "arrowup":
+            console.log("Jump key pressed, isJumping:", isJumping);
             if (!isJumping) {
+              console.log("Starting jump");
               setIsJumping(true);
               startJumpAnimation();
+            } else {
+              console.log("Already jumping, ignoring jump key");
             }
             break;
           case "enter":
@@ -348,7 +375,7 @@ function Home() {
           return newFrame;
         });
       }, 200);
-    } else if (!isWalking && walkInterval) {
+    } else if (!isWalking) {
       console.log("Walking effect triggered - clearing interval");
       clearInterval(walkInterval);
     }
