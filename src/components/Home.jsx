@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.css";
+import idleImage from "../../Images/Idle.png";
 
 function Home() {
   return (
@@ -20,6 +21,9 @@ function Home() {
         </div>
       </div>
       <div className="bottom-menu">
+        <div className="menu-character">
+          <img src={idleImage} alt="Character" className="character-image" />
+        </div>
         <div className="menu-item">Websites</div>
         <div className="menu-item">Mobile Apps</div>
         <div className="menu-item">Marketing</div>

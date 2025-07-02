@@ -61,6 +61,22 @@
   width: 100%;
   max-width: 100%;
   margin-top: auto;
+  position: relative;
+}
+
+.menu-character {
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+}
+
+.character-image {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .menu-item {
@@ -112,6 +128,14 @@
 
   .bottom-menu {
     flex-direction: column;
+  }
+
+  .character-image {
+    height: 90px;
+  }
+
+  .menu-character {
+    top: -45px;
   }
 
   .menu-item {

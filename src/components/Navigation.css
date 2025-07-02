@@ -12,6 +12,7 @@
   justify-content: space-between;
   align-items: flex-start;
   max-width: 100%;
+  position: relative;
 }
 
 .nav-brand {
@@ -34,6 +35,14 @@
   color: #ffffff;
   opacity: 0.5;
   line-height: 1;
+}
+
+
+.character-image {
+  height: 200px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .contact-button {
@@ -68,5 +77,13 @@
   .contact-button {
     font-size: 18px;
     padding: 6px 12px;
+  }
+
+  .character-image {
+    height: 60px;
+  }
+
+  .nav-character {
+    bottom: -15px;
   }
 }
