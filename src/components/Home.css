@@ -31,7 +31,7 @@
 }
 
 .waving-image {
-  max-width: 180px;
+  max-width: 150px;
   height: auto;
 }
 
@@ -94,14 +94,13 @@
 
 .menu-character {
   position: absolute;
-  top: -180px;
+  top: -125px;
   transform: translateX(-50%);
   z-index: 1001;
 }
 
 /* Ensure idle character has proper positioning */
 .menu-character:not(.jumping):not(.landing):not(.falling):not(.walking) {
-  top: -180px;
   transform: translateX(-50%);
 }
 
@@ -122,7 +121,6 @@
 }
 
 .character-image {
-  height: 120px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
@@ -131,30 +129,17 @@
   image-rendering: crisp-edges;
 }
 
-/* Make jumping images larger to match idle size */
-.menu-character.jumping .character-image {
-  height: 300px;
-  width: auto;
-  object-fit: contain;
-}
-
 .menu-character.walking {
-  top: -300px;
-}
-
-.menu-character.walking .character-image {
-  height: 300px;
-  width: auto;
-  object-fit: contain;
+  top: -200px;
 }
 
 .menu-character.landing {
-  top: -300px;
+  top: -200px;
 }
 
 .menu-character.falling {
-  animation: fall 1.5s ease-in;
-  top: -600px; /* Start position above screen */
+  animation: fall 1s ease-in;
+  top: -550px; /* Start position above screen */
 }
 
 @keyframes fall {
@@ -166,17 +151,10 @@
   }
 }
 
-/* Make falling image larger to match jumping size */
-.menu-character.falling .character-image {
-  height: 300px;
-  width: auto;
-  object-fit: contain;
-}
-
 /* Base character image size for idle state */
 .menu-character:not(.jumping):not(.landing):not(.falling):not(.walking)
   .character-image {
-  height: 200px;
+  height: 140px;
   width: auto;
   object-fit: contain;
 }

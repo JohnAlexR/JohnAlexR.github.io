@@ -8,6 +8,8 @@ import landingImage from "../../Images/landing.png";
 import walking1Image from "../../Images/walking_1.png";
 import walking2Image from "../../Images/walking_2.png";
 import walking3Image from "../../Images/walking_3.png";
+import walking4Image from "../../Images/walking_4.png";
+import walking5Image from "../../Images/walking_5.png";
 
 function Home() {
   const [characterPosition, setCharacterPosition] = useState(35); // Position below waving image
@@ -18,7 +20,7 @@ function Home() {
   const [hasStarted, setHasStarted] = useState(false); // Track if user has started moving
   const [isFalling, setIsFalling] = useState(false); // Track falling animation state
   const [isWalking, setIsWalking] = useState(false);
-  const [walkFrame, setWalkFrame] = useState(0); // 0-2 for the 3 walk frames
+  const [walkFrame, setWalkFrame] = useState(0); // 0-4 for the 5 walk frames
 
   // Physics state
   const velocity = useRef(0);
@@ -59,6 +61,8 @@ function Home() {
     walking1Image, // Frame 0: Step 1
     walking2Image, // Frame 1: Step 2
     walking3Image, // Frame 2: Step 3
+    walking4Image, // Frame 3: Step 4
+    walking5Image, // Frame 4: Step 5
   ];
 
   const canMove = () => {
@@ -122,7 +126,7 @@ function Home() {
     setIsLanding(false); // Ensure landing is cleared
     setJumpFrame(2); // Start with jumping_2 frame
 
-    // After 1500ms, land on menu and set hasStarted to true
+    // After 1000ms, land on menu and set hasStarted to true
     setTimeout(() => {
       console.log("Falling animation complete, setting hasStarted to true");
       setIsFalling(false);
@@ -130,7 +134,7 @@ function Home() {
       setHasStarted(true);
       hasStartedRef.current = true; // Set ref as well
       setJumpFrame(0); // Return to idle
-    }, 1500);
+    }, 1000);
   };
 
   // Walking animation sequence
@@ -145,7 +149,7 @@ function Home() {
       const walkInterval = setInterval(() => {
         console.log("Interval triggered, current walkFrame:", walkFrame);
         setWalkFrame((prev) => {
-          const newFrame = (prev + 1) % 3;
+          const newFrame = (prev + 1) % 5;
           console.log("Walking frame updated from", prev, "to", newFrame);
           return newFrame;
         });
@@ -242,7 +246,7 @@ function Home() {
 
       // Start falling animation when any movement key is pressed for the first time
       if (
-        !hasStarted &&
+        !hasStartedRef.current &&
         !isFalling &&
         (event.key.toLowerCase() === "a" ||
           event.key.toLowerCase() === "d" ||
@@ -255,7 +259,7 @@ function Home() {
       }
 
       // Don't allow falling if hasStarted is true
-      if (hasStarted && !isFalling) {
+      if (hasStartedRef.current && !isFalling) {
         console.log("Processing normal movement");
         switch (event.key.toLowerCase()) {
           case "a":
@@ -339,7 +343,7 @@ function Home() {
       walkInterval = setInterval(() => {
         console.log("Walking interval triggered");
         setWalkFrame((prev) => {
-          const newFrame = (prev + 1) % 3;
+          const newFrame = (prev + 1) % 5;
           console.log("Walking frame updated from", prev, "to", newFrame);
           return newFrame;
         });
