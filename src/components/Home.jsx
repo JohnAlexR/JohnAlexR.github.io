@@ -5,8 +5,21 @@ import idleImage from "../../Images/Idle.png";
 function Home() {
   const [characterPosition, setCharacterPosition] = useState(50); // 50% is center
   const [isJumping, setIsJumping] = useState(false);
-  const [movementDirection, setMovementDirection] = useState(0); // -1 for left, 0 for none, 1 for right
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+
+  // Physics state
+  const velocity = useRef(0);
+  const targetVelocity = useRef(0);
+  const isMovingLeft = useRef(false);
+  const isMovingRight = useRef(false);
+
+  // Physics constants
+  const ACCELERATION = 0.8; // How fast the character accelerates
+  const FRICTION = 0.85; // How much the character slows down (0-1)
+  const MAX_SPEED = 0.6; // Maximum movement speed
+  const JUMP_VELOCITY = -2.5; // Initial upward velocity for jump
+  const GRAVITY = 0.15; // How fast the character falls
+
   const lastMoveTime = useRef(0);
   const moveCooldown = 100; // 100ms cooldown between moves
 
@@ -48,31 +61,70 @@ function Home() {
     // Add your navigation logic here
   };
 
+  // Physics update loop
+  useEffect(() => {
+    let animationId;
+
+    const updatePhysics = () => {
+      // Update horizontal movement
+      if (isMovingLeft.current) {
+        targetVelocity.current = -MAX_SPEED;
+      } else if (isMovingRight.current) {
+        targetVelocity.current = MAX_SPEED;
+      } else {
+        targetVelocity.current = 0;
+      }
+
+      // Apply acceleration towards target velocity
+      const velocityDiff = targetVelocity.current - velocity.current;
+      velocity.current += velocityDiff * ACCELERATION;
+
+      // Apply friction when not actively moving
+      if (!isMovingLeft.current && !isMovingRight.current) {
+        velocity.current *= FRICTION;
+      }
+
+      // Update position
+      setCharacterPosition((prev) => {
+        const newPosition = prev + velocity.current;
+        return Math.max(0, Math.min(100, newPosition));
+      });
+
+      // Stop very small movements
+      if (Math.abs(velocity.current) < 0.01) {
+        velocity.current = 0;
+      }
+
+      animationId = requestAnimationFrame(updatePhysics);
+    };
+
+    updatePhysics();
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       switch (event.key.toLowerCase()) {
         case "a":
         case "arrowleft":
-          if (canMove()) {
-            setMovementDirection(-1);
-            setCharacterPosition((prev) => Math.max(0, prev - 4)); // Move left, minimum 0%
-          }
+          isMovingLeft.current = true;
           break;
         case "d":
         case "arrowright":
-          if (canMove()) {
-            setMovementDirection(1);
-            setCharacterPosition((prev) => Math.min(100, prev + 4)); // Move right, maximum 100%
-          }
+          isMovingRight.current = true;
           break;
         case "w":
         case "arrowup":
           if (!isJumping) {
             setIsJumping(true);
+            // Add jump physics here if needed
             setTimeout(() => {
               setIsJumping(false);
-              // Reset movement direction to prevent sudden movement after landing
-              setTimeout(() => setMovementDirection(0), 50);
             }, 600); // Jump duration
           }
           break;
@@ -92,15 +144,11 @@ function Home() {
       switch (event.key.toLowerCase()) {
         case "a":
         case "arrowleft":
-          if (movementDirection === -1) {
-            setMovementDirection(0);
-          }
+          isMovingLeft.current = false;
           break;
         case "d":
         case "arrowright":
-          if (movementDirection === 1) {
-            setMovementDirection(0);
-          }
+          isMovingRight.current = false;
           break;
         default:
           break;
@@ -113,30 +161,7 @@ function Home() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [isJumping, movementDirection]);
-
-  // Continue movement during jump
-  useEffect(() => {
-    let jumpInterval;
-    if (isJumping && movementDirection !== 0) {
-      jumpInterval = setInterval(() => {
-        setCharacterPosition((prev) => {
-          if (movementDirection === -1) {
-            return Math.max(0, prev - 1.5); // Consistent movement during jump
-          } else if (movementDirection === 1) {
-            return Math.min(100, prev + 1.5); // Consistent movement during jump
-          }
-          return prev;
-        });
-      }, 25); // Update more frequently for smoother movement
-    }
-
-    return () => {
-      if (jumpInterval) {
-        clearInterval(jumpInterval);
-      }
-    };
-  }, [isJumping, movementDirection]);
+  }, []);
 
   const currentMenuItem = getCurrentMenuItem();
 
